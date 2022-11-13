@@ -187,7 +187,7 @@ class ChiTietBaoCaoSuDungThuoc(db.Model):
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+        # db.create_all()
         # t = Thuoc(tenThuoc='Paracetamol', soLuong=200, giaBan=12000, is_active=True, donVi='Vỷ', moTa='Paracetamol thường được chỉ định điều trị trong các trường hợp đau và sốt từ nhẹ đến vừa như đau đầu, đau cơ, đau khớp, đau lưng, đau răng, hạ sốt... Thuốc cũng có tác dụng giảm đau đối với người bị viêm khớp nhẹ, trường hợp viêm nặng hơn như viêm sưng khớp cơ thì việc sử dụng Paracetamol sẽ không hiệu quả.')
         # t1 = Thuoc(tenThuoc='Thuốc Farzincol 10Mg Pharmedic Hỗ Trợ Bổ Sung Kẽm Vào Chế Độ Ăn', soLuong=100, giaBan=580,
         #            is_active=True, moTa=' Farzincol của công ty cổ phần dược phẩm dược liệu Pharmedic, thành phần chính kẽm gluconat'
