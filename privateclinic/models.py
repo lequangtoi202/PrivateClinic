@@ -197,3 +197,8 @@ if __name__ == '__main__':
         #
         # db.session.add_all([t, t1, bn])
         # db.session.commit()
+
+        nv1 = NhanVien(hoTen='Phạm Văn C', email='cpham@gmail.com', diaChi='An Giang', ngaySinh='1999/12/24', dienThoai='0786955662')
+
+        db.session.add_all(nv1)
+        db.session.commit()

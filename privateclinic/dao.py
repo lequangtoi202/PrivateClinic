@@ -4,7 +4,7 @@ from urllib.parse import quote
 from privateclinic import db, app
 from sqlalchemy import create_engine
 
-engine = create_engine('mysql+pymysql://root:%s@localhost/privateclinic?charset=utf8mb4' % quote('lqt25092002'))
+engine = create_engine('mysql+pymysql://root:%s@localhost/privateclinic?charset=utf8mb4' % quote('admin@123'))
 
 
 def list_doctor_and_nurse():
