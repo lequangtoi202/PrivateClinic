@@ -1,0 +1,106 @@
+{% extends 'layout/base.html' %}
+
+{% block header %}
+{% include 'layout/header_staff.html' %}
+{% endblock %}
+
+{% block content %}
+
+<!-- About Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row gx-5 mb-4">
+            <h5 class="d-inline-block text-primary text-center text-uppercase border-5">Thanh Toán</h5>
+        </div>
+
+        <div class="mx-auto">
+            <form action="/employee/payment" method="post">
+                <div class="row g-3 align-items-center justify-content-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">Mã phiếu khám:</label>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <input type="text"  name="maPK" class="form-control bg-light border-0"
+                               placeholder="Nhập mã phiếu khám"
+                               style="height: 55px;">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary" style="width:120px; height: 55px;">Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% if is_paid %}
+        <div class="mt-3">
+            <div class="alert text-center alert-warning m-auto" style="width:50%;">Phiếu khám này đã thanh toán</div>
+        </div>
+        {% else %}
+        <div class="mt-5">
+
+            {%if phieu_kham%}
+            <div class="row">
+                <div class="form-group mt-2 col-md-6 col-sm-12">
+                    <label>Mã phiếu khám:</label>
+                    <input type="text" id="maPK" class="form-control" readonly value="{{phieu_kham.maPK}}">
+                </div>
+                <div class="form-group mt-2 col-md-6 col-sm-12">
+                    <label>Ngày khám:</label>
+                    <input type="date" class="form-control" readonly value="{{phieu_kham.ngayKham}}">
+                </div>
+                <div class="form-group mt-2 col-md-6 col-sm-12">
+                    <label for="name">Mã bệnh nhân:</label>
+                    <input type="text" class="form-control" readonly name="hoTen" id="name" value="{{phieu_kham.maBN}}">
+                </div>
+                <div class="form-group mt-2 col-md-6 col-sm-12">
+                    <label for="name">Tên bệnh nhân:</label>
+                    <input type="text" class="form-control" readonly name="hoTen" value="{{benh_nhan.hoTen}}">
+                </div>
+            </div>
+            <div class="mt-5">
+                <table class="table border">
+                    <thead>
+                    <tr>
+                        <th scope="col">Tên thuốc</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Giá bán</th>
+                        <th scope="col">Tổng</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
+                    {% for item in receipt_info.thuoc %}
+                        <tr>
+                            <td><div>{{item.ten_thuoc}}</div></td>
+                            <td><div>{{item.so_luong}}</div></td>
+                            <td><div>{{ "{:,.0f}".format(item.gia_ban) }}/{{item.don_vi}}</div></td>
+                            <td><div>{{ "{:,.0f}".format(item.tong) }} VNĐ</div></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {%if receipt_info%}
+            <div><h5>Tổng số lượng:<span> {{receipt_info.total_quan}}</span></h5></div>
+            <div><h5>Tiền khám:<span id="tien_kham"> {{ "{:,.0f}".format(tien_kham) }} VNĐ</span></h5></div>
+            <div><h5>Tiền thuốc:<span id="tien_thuoc"> {{ "{:,.0f}".format(receipt_info.total_amount) }}  VNĐ</span></h5></div>
+            <div><h5>Thành tiền:<span id="tong_tien"> {{ "{:,.0f}".format(receipt_info.total_amount + tien_kham) }}  VNĐ</span></h5></div>
+            {%endif%}
+            <div class="col-12 mb-5">
+                        <button type="button" class="btn-right-position btn btn-danger" onclick="payment()"
+                                style="width:120px; height: 55px;">Thanh Toán
+                        </button>
+            </div>
+            {%endif%}
+
+
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+<!-- About End -->
+
+
+{% endblock %}

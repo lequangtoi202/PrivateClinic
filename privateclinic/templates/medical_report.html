@@ -1,0 +1,70 @@
+{% extends 'layout/base.html' %}
+
+{% block header %}
+{% include 'layout/header_staff.html' %}
+{% endblock %}
+
+{% block content %}
+
+<!-- About Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row gx-5 mb-4">
+            <h5 class="d-inline-block text-primary text-center text-uppercase border-5">Lịch sử khám bệnh</h5>
+        </div>
+        <div class="mx-auto">
+            <form action="/employee/find-history-exam" method="post">
+                <div class="row g-3 align-items-center justify-content-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">Mã bệnh nhân:</label>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <input type="text" name="maBN" class="form-control bg-light border-0"
+                               placeholder="Nhập mã bệnh nhân"
+                               style="height: 55px;">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary" style="width:120px; height: 55px;">Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="mt-5">
+            {% if err_msg or list_medical_reports == Null%}
+            <p class="text-danger text-center">{{err_msg}}</p>
+
+            {% else %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Mã Phiếu Khám</th>
+                    <th scope="col">Ngày Khám</th>
+                    <th scope="col">Triệu Chứng</th>
+                    <th scope="col">Chuẩn đoán</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for report in list_medical_reports%}
+                <tr>
+                    <th scope="row">{{ report.maPK}}</th>
+                    <td>{{ report.ngayKham}}</td>
+                    <td class="text-wrap text-truncate">{{ report.trieuChung}}</td>
+                    <td>{{ report.chuanDoan}}</td>
+                    <td><a href="/employee/find-history-exam/{{report.maPK}}" class="btn btn-primary ">Xem Thông Tin</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+
+
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+
+{% endblock %}

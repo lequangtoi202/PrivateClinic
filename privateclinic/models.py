@@ -7,10 +7,9 @@ from flask_login import UserMixin
 
 class UserRole(UserEnum):
     ADMIN = 1
-    USER = 2
-    NURSE = 3
-    DOCTOR = 4
-    CASHIER = 5
+    NURSE = 2
+    DOCTOR = 3
+    STAFF = 4
 
 
 class QuiDinh(db.Model):
@@ -29,6 +28,8 @@ class NhanVien(db.Model):
     ngaySinh = Column(DATE, nullable=False)
     diaChi = Column(String(100), nullable=False)
     dienThoai = Column(String(11), nullable=False)
+    hinhAnh = Column(String(200))
+
     taiKhoan = relationship('TaiKhoan', backref='nhanvien', lazy=True)
     bacSi = relationship('BacSi', backref='nhanvien', uselist=False)
     yta = relationship('Yta', backref='nhanvien', uselist=False)
@@ -49,13 +50,13 @@ class Yta(NhanVien):
 
 
 class TaiKhoan(db.Model, UserMixin):
-    maTK = Column(BIGINT, primary_key=True, autoincrement=True)
-    tenDN = Column(String(50), nullable=False)
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    name = Column(String(50), nullable=False)
     username = Column(String(50), nullable=False, unique=True)
     password = Column(String(50), nullable=False)
     avatar = Column(String(150))
     is_active = Column(Boolean, default=True)
-    user_role = Column(Enum(UserRole), default=UserRole.USER)
+    user_role = Column(Enum(UserRole), default=UserRole.STAFF)
     maNV = Column(BIGINT, ForeignKey(NhanVien.maNV), nullable=False, unique=True)
 
     def __str__(self):
@@ -72,6 +73,7 @@ class Thuoc(db.Model):
     giaBan = Column(Float, nullable=False)
     is_active = Column(Boolean, nullable=False)
     donVi = Column(String(20), nullable=False)
+    hinhAnh = Column(String(200), nullable=False)
     phieu_thuoc = relationship('PhieuKham_Thuoc', backref="thuoc", lazy=True)
 
     def __str__(self):
@@ -111,6 +113,7 @@ class ChiTietDSKham(db.Model):
     __tablename__ = 'ct_ds_kham'
 
     maCTDS = Column(BIGINT, primary_key=True, autoincrement=True)
+
     maBN = Column(BIGINT, ForeignKey(BenhNhan.maBN), nullable=False)
     maDS = Column(BIGINT, ForeignKey(DanhSachKhamBenh.maDS, ondelete='CASCADE'), nullable=False)
     maTG = Column(BIGINT, ForeignKey(ThoiGian.maTG), nullable=False)
@@ -120,12 +123,12 @@ class PhieuKham(db.Model):
     __tablename__ = 'phieu_kham'
 
     maPK = Column(BIGINT, primary_key=True, autoincrement=True)
-    ngayKham = Column(DATE, nullable=False)
-    trieuChung = Column(Text, nullable=False)
-    chuanDoan = Column(Text, nullable=False)
+    ngayKham = Column(DATE)
+    trieuChung = Column(Text)
+    chuanDoan = Column(Text)
 
     hoaDon = relationship('HoaDon', backref='phieu_kham', uselist=False)
-    maBN = Column(BIGINT, ForeignKey(BenhNhan.maBN), nullable=False)
+    maBN = Column(BIGINT, ForeignKey(BenhNhan.maBN))
     phieu_thuoc = relationship('PhieuKham_Thuoc', backref="phieukham", lazy=True)
 
 

@@ -1,0 +1,75 @@
+{% extends 'layout/base.html' %}
+{% block header %}
+{% include 'layout/header_staff.html' %}
+
+{% endblock %}
+{% block content %}
+<!-- About Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="mb-4 text-center">
+            <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">DANH SÁCH KHÁM BỆNH</h5>
+        </div>
+
+        <form method="post" action="/employee/filter">
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="date_exam" class="col-form-label">Ngày Khám:</label>
+                </div>
+                <div class="date col-auto" id="date_exam" data-target-input="nearest">
+                    <input type="date"
+                           name="date"
+                           class="form-control bg-light border-0 datetimepicker-input"
+                           data-target="#date_exam" data-toggle="datetimepicker"
+                           style="height: 55px;">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary" style="width:90px; height: 55px;">Lọc</button>
+                </div>
+            </div>
+        </form>
+        {% if err_msg or list_patients == Null %}
+        <div class="text text-center text-danger">{{err_msg}}</div>
+        {% else %}
+        <div class="mt-5">
+            <table class="table border">
+                <thead>
+                <tr>
+                    <th scope="col">Mã bệnh nhân</th>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Ngày sinh</th>
+                    <th scope="col">Giới tính</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Số điện thoại</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in list_patients %}
+                <tr>
+                    <th scope="row">{{p.maBN}}</th>
+                    <td>{{p.hoTen}}</td>
+                    <td>{{p.ngaySinh}}</td>
+                    {% if p.gioiTinh == 1%}
+                    <td>Nam</td>
+                    {% else %}
+                    <td>Nữ</td>
+                    {% endif %}
+                    <td>{{p.email}}</td>
+                    <td>{{p.diaChi}}</td>
+                    <td>{{p.dienThoai}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit" class="btn-right-position btn btn-primary">Xuất danh sách</button>
+        {% endif %}
+
+    </div>
+</div>
+</div>
+<!-- About End -->
+
+{% endblock %}

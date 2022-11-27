@@ -1,0 +1,77 @@
+{% extends 'layout/base.html' %}
+{% block header %}
+{% include 'layout/header_staff.html' %}
+
+{% endblock %}
+{% block content %}
+
+
+<!-- Team Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+
+        <div class="text-center mx-auto mb-5" style="max-width: 500px;">
+            <h5 class="d-inline-block text-primary text-uppercase text-center border-5">Thông tin chi tiết phiếu
+                khám</h5>
+        </div>
+        <div class="row">
+            <div class="form-group mt-2 col-md-6 col-sm-12">
+                <label>Mã phiếu khám:</label>
+                <input type="text" class="form-control" name="email" value="{{medical_report.maPK}}">
+            </div>
+            <div class="form-group mt-2 col-md-6 col-sm-12">
+                <label for="dob">Ngày khám:</label>
+                <input type="date" class="form-control" name="ngaySinh" value="{{medical_report.ngayKham}}">
+            </div>
+            <div class="form-group mt-2 col-md-6 col-sm-12">
+                <label for="name">Mã bệnh nhân:</label>
+                <input type="text" class="form-control" name="hoTen" id="name" value="{{medical_report.maBN}}">
+            </div>
+            <div class="form-group mt-2 col-md-6 col-sm-12">
+                <label for="dob">Họ tên bệnh nhân:</label>
+                <input type="text" class="form-control" value="{{patient.hoTen}}" id="dob">
+            </div>
+
+            <div class="form-group mt-2 col-md-6 col-sm-12">
+                <label>Triệu chứng:</label>
+                <textarea class="form-control">{{medical_report.trieuChung}}</textarea>
+            </div>
+            <div class="form-group mt-2 col-md-6 col-sm-12">
+                <label>Chuẩn đoán:</label>
+                <textarea class="form-control">{{medical_report.chuanDoan}}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5 container">
+        <h5 class="text-center">Toa thuốc</h5>
+        {% if medical_report_details %}
+        <table class="table border">
+            <thead>
+            <tr>
+                <th scope="col">Tên thuốc</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Cách dùng</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody id="table">
+                {% for m in medical_report_details%}
+                <tr>
+                    <td>{{ m.thuoc}}</td>
+                    <td>{{ m.soLuong}}</td>
+                    <td>{{ m.cachDung}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div  style="width: 100%;" class="mx-auto">
+            <div class="alert alert-danger text-center m-auto">Không có đơn thuốc</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Team End -->
+
+{% endblock %}

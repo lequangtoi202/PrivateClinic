@@ -1,0 +1,89 @@
+{% extends 'layout/base.html' %}
+
+{% block header %}
+{% include 'layout/header_staff.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- About Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row gx-5 mb-4">
+            <h5 class="d-inline-block text-primary text-center text-uppercase border-5">Danh sách thuốc</h5>
+        </div>
+        <div class="mx-auto">
+            <form action="/employee/medicine">
+                <div class="row g-3 align-items-center justify-content-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">Tên thuốc:</label>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <input type="text" autocomplete="on" name="kw" class="form-control bg-light border-0"
+                               placeholder="Nhập tên thuốc"
+                               style="height: 55px;">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary" style="width:120px; height: 55px;">Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="mt-5">
+            <div class="text-center text-right">
+                <a href="{{ url_for('find_medicine', page=list_medicine.prev_num) }}"
+                   class="btn btn-outline-dark
+                {% if list_medicine.page == 1 %}disabled{% endif %}">
+                    &laquo;
+                </a>
+                <!-- Loop through the number of pages to display a link for each-->
+                {% for page_num in list_medicine.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2)%}
+                {% if page_num %}
+                <!-- Check for the active page and set the link to "Active"-->
+                {% if list_medicine.page == page_num %}
+                <a href="{{ url_for('find_medicine', page=page_num) }}"
+                   class="btn btn-dark">
+                    {{ page_num }}
+                </a>
+                {% else %}
+                <a href="{{ url_for('find_medicine', page=page_num) }}"
+                   class="btn btn-outline-dark">
+                    {{ page_num }}
+                </a>
+                {% endif %}
+                {% else %}
+                ...
+                {% endif %}
+                {% endfor %}
+                <a href="{{ url_for('find_medicine', page=list_medicine.next_num) }}"
+                   class="btn btn-outline-dark
+                   {% if list_medicine.page == list_medicine.pages %}disabled{% endif %}">
+                    &raquo;
+                </a>
+            </div>
+            {% if list_medicine %}
+            <div class="row">
+                {% for m in list_medicine %}
+                <div class="col-md-3 col-sm-12" style="padding:1rem;">
+                    <div class="">
+                        <img class="card-img-top" src="{{m.hinhAnh}}" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">{{m.tenThuoc}}</h4>
+                            <p class="card-text">{{ "{:,.0f}".format(m.giaBan) }} VNĐ</p>
+                            <p class="card-text">Đơn vị tính: {{m.donVi}}</p>
+                            <a href="/employee/medicine/{{m.maThuoc}}" class="btn btn-primary ">Xem Thông Tin</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor%}
+            </div>
+            {% else %}
+            <p class="text-danger">Không có sản phẩm nào!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+
+{% endblock %}

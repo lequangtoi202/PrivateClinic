@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+{% block header %}
+{% include 'layout/header_staff.html' %}
+
+{% endblock %}
+{% block content %}
+
+
+<!-- Team Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+
+        <div class="text-center mx-auto mb-5" style="max-width: 500px;">
+            <h5 class="d-inline-block text-primary text-uppercase text-center border-5">Thông tin chi tiết sản phẩm</h5>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <img src="{{ medicine.hinhAnh }}" class="img-fluid" alt="{{ medicine.hinhAnh }}"/>
+                </div>
+                <div class="col-md-8 col-sm-6">
+                    <h1>{{ medicine.tenThuoc }}</h1>
+                    <p>{{ medicine.moTa|safe }}</p>
+                    <h3>{{ "{:,.1f}".format(medicine.giaBan) }} VNĐ / {{medicine.donVi}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Team End -->
+
+{% endblock %}

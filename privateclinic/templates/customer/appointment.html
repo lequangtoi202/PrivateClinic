@@ -1,0 +1,104 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'success' %}
+            <div class="alert alert-success text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
+            {% endif %}
+            {% if category == 'error' %}
+            <div class="alert alert-danger text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+    <!-- Appointment Start -->
+<div class="container-fluid bg-primary my-5 py-5">
+    <div class="container py-5">
+        <div class="row gx-5">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="mb-4">
+                    <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">ĐẶT LỊCH KHÁM</h5>
+                    <h1 class="display-4">Đăng ký lịch khám </h1>
+                </div>
+                <p class="text-white mb-5">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor
+                    ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero
+                    ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore
+                    sanctus sed et. Takimata takimata sanctus sed.</p>
+                <a class="btn btn-dark rounded-pill py-3 px-5 me-3" href="">Tìm kiếm</a>
+                <a class="btn btn-outline-dark rounded-pill py-3 px-5" href="">Xem thêm</a>
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-white text-center rounded p-5">
+                    <h1 class="mb-4">Đặt Lịch Khám</h1>
+                    <form method="post" action="/enroll_medical_exam">
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6">
+                                <input type="text" required name="name" class="form-control bg-light border-0" placeholder="Họ tên"
+                                       style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="time bg-light border-0">
+                                    <label class="">Giới tính: </label>
+                                <select name="gender" id="gender" style="width: 100px;border: none;outline: none; border-radius: 8px;">
+                                    <option value="1">Nam</option>
+                                    <option value="0">Nữ</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="date" id="dob" data-target-input="nearest">
+                                    <input type="date"
+                                           required
+                                           name="dob"
+                                           class="form-control bg-light border-0 datetimepicker-input"
+                                           placeholder="Ngày sinh" data-target="#dob" data-toggle="datetimepicker"
+                                           style="height: 55px;">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="email" required name="email" class="form-control bg-light border-0" placeholder="Địa chỉ Email"
+                                       style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="text" required name="phone" class="form-control bg-light border-0" placeholder="Số điện thoại"
+                                       style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="text" required name="address" class="form-control bg-light border-0" placeholder="Địa chỉ"
+                                       style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div  id="date" data-target-input="nearest">
+                                    <input type="date"
+                                           required
+                                           name="date_schedule"
+                                           class="form-control bg-light border-0 datetimepicker-input"
+                                           placeholder="Ngày khám" data-target="#date_schedule" data-toggle="datetimepicker"
+                                           style="height: 55px;">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class=" time bg-light border-0">
+                                    <label class="">Thời gian: </label>
+                                <select name="time" id="time" style="width: 100px;border: none;outline: none; border-radius: 8px;">
+                                    {% for t in list_times %}
+                                        <option value="{{t.maTG}}">{{t.gio.strftime('%H:%M %p')}} </option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100 py-3" type="submit">Đặt Lịch Khám</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Appointment End -->
+
+{% endblock %}

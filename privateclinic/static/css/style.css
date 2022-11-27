@@ -50,6 +50,16 @@
     text-align: center;
 }
 
+.btn-right-position{
+    position: absolute;
+    right: 60px;
+}
+.btn-detail{
+    margin-left: 10px;
+    font-size: 18px;
+    height: 46px;
+    width: 209px
+}
 .back-to-top {
     position: fixed;
     display: none;

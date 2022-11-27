@@ -1,0 +1,97 @@
+{% extends 'layout/base.html' %}
+{% block header %}
+{% include 'layout/header_staff.html' %}
+
+{% endblock %}
+{% block content %}
+<!-- About Start -->
+<div class="container py-5">
+    <div class="container">
+        <div class="mb-4 text-center">
+            <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Thông tin</h5>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success text-center">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% if err_user_msg %}
+            <div class="alert alert-danger text-center">{{err_user_msg}}</div>
+        {% endif %}
+        <div class="mb-5">
+            <form method="post" action="/employee/account/{{user_info.maNV}}" enctype="multipart/form-data">
+                <div class="form-group mt-2">
+                    <input type="text" class="form-control" name="maNV" hidden value="{{user_info.maNV}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="name">Họ tên:</label>
+                    <input type="text" class="form-control" name="hoTen" id="name" value="{{user_info.hoTen}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="dob">Ngày sinh:</label>
+                    <input type="date" class="form-control" name="ngaySinh" id="dob" value="{{user_info.ngaySinh}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" name="email" id="email" value="{{user_info.email}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="phone">Điện thoại:</label>
+                    <input type="text" class="form-control" id="phone" name="dienThoai" value="{{user_info.dienThoai}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="address">Địa chỉ:</label>
+                    <input type="text" class="form-control" id="address" name="diaChi" value="{{user_info.diaChi}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="image">Hình ảnh:</label>
+                    <input type="file" class="form-control" id="image" name="hinhAnh" value="{{user_info.hinhAnh}}">
+                </div>
+                </br>
+                <button type="submit" class="btn btn-danger btn-right-position">Lưu thông tin</button>
+            </form>
+        </div>
+        <div class="mb-4 text-center">
+            <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Tài khoản</h5>
+        </div>
+        <div>
+            {% if err_msg %}
+            <div class="alert alert-danger text-center">{{err_msg}}</div>
+            {% endif %}
+            <form method="post" action="/employee/update_acc/{{user_info.maNV}}" enctype="multipart/form-data">
+                <div class="form-group mt-2">
+                    <input type="text" class="form-control" name="maNV" hidden value="{{user_info.maNV}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="acc_name">Tên hiển thị:</label>
+                    <input type="text" class="form-control" name="name" id="acc_name" value="{{account_info.name}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" name="username" id="username"
+                           value="{{account_info.username}}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="password">Mật khẩu mới:</label>
+                    <input type="password" class="form-control" name="password" id="password">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="confirm">Nhập lại mật khẩu mới:</label>
+                    <input type="password" class="form-control" name="confirm" id="confirm">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="avatar">Avatar:</label>
+                    <input type="file" class="form-control" id="avatar" name="avatar" value="{{user_info.avatar}}">
+                </div>
+                </br>
+                <button type="submit" class="btn btn-danger btn-right-position">Lưu thông tin</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+
+{% endblock %}

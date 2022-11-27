@@ -1,7 +1,22 @@
 {% extends 'layout/base.html' %}
+{% block header %}
+{% include 'layout/header_staff.html' %}
 
+{% endblock %}
 {% block content %}
-    <!-- Appointment Start -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'success' %}
+            <div class="alert alert-success text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
+            {% endif %}
+            {% if category == 'error' %}
+            <div class="alert alert-danger text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<!-- Appointment Start -->
 <div class="container-fluid bg-primary my-5 py-5">
     <div class="container py-5">
         <div class="row gx-5">
@@ -20,57 +35,66 @@
             <div class="col-lg-6">
                 <div class="bg-white text-center rounded p-5">
                     <h1 class="mb-4">Đặt Lịch Khám</h1>
-                    <form method="post" action="/enroll-exam">
+                    <form method="post" action="/employee/enroll_medical_exam">
                         <div class="row g-3">
                             <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control bg-light border-0" placeholder="Họ tên"
+                                <input type="text" name="name" class="form-control bg-light border-0"
+                                       placeholder="Họ tên"
                                        style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="time bg-light border-0">
                                     <label class="">Giới tính: </label>
-                                <select name="time" id="gender" style="width: 100px;border: none;outline: none; border-radius: 8px;">
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
-                                </select>
+                                    <select name="gender" id="gender"
+                                            style="width: 100px;border: none;outline: none; border-radius: 8px;">
+                                        <option value="1">Nam</option>
+                                        <option value="0">Nữ</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="date" id="dob" data-target-input="nearest">
-                                    <input type="text"
+                                    <input type="date"
+                                           name="dob"
                                            class="form-control bg-light border-0 datetimepicker-input"
                                            placeholder="Ngày sinh" data-target="#dob" data-toggle="datetimepicker"
                                            style="height: 55px;">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="email" class="form-control bg-light border-0" placeholder="Địa chỉ Email"
+                                <input type="email" name="email" class="form-control bg-light border-0"
+                                       placeholder="Địa chỉ Email"
                                        style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control bg-light border-0" placeholder="Số điện thoại"
+                                <input type="text" name="phone" class="form-control bg-light border-0"
+                                       placeholder="Số điện thoại"
                                        style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control bg-light border-0" placeholder="Địa chỉ"
+                                <input type="text" name="address" class="form-control bg-light border-0"
+                                       placeholder="Địa chỉ"
                                        style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="date" id="date" data-target-input="nearest">
-                                    <input type="text"
+                                    <input type="date"
+                                           name="date_schedule"
                                            class="form-control bg-light border-0 datetimepicker-input"
-                                           placeholder="Ngày khám" data-target="#date" data-toggle="datetimepicker"
+                                           placeholder="Ngày khám" data-target="#date_schedule"
+                                           data-toggle="datetimepicker"
                                            style="height: 55px;">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class=" time bg-light border-0">
                                     <label class="">Thời gian: </label>
-                                <select name="time" id="time" style="width: 100px;border: none;outline: none; border-radius: 8px;">
-                                    {% for t in list_times %}
-                                        <option value="{{t.maTG}}">{{t.gio.strftime('%H:%M %p')}} </option>
-                                    {% endfor %}
-                                </select>
+                                    <select name="time" id="time"
+                                            style="width: 100px;border: none;outline: none; border-radius: 8px;">
+                                        {% for t in list_times %}
+                                        <option value="{{t.maTG}}">{{t.gio.strftime('%H:%M %p')}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-12">

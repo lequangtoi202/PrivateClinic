@@ -7,19 +7,19 @@
                     THÔNG TIN LIÊN HỆ</h4>
                 <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed
                     dolor</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>info@example.com</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>371 Nguyễn Kiệm, Gò Vấp</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>medinova@gmail.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary me-3"></i>+84 868832530</p>
             </div>
             <div class="col-lg-4 col-md-4">
                 <h4 class="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">
                     MENU</h4>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Trang chủ</a>
-                    <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Giới thiệu</a>
-                    <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Dịch vụ</a>
-                    <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đội ngũ bác sĩ</a>
-                    <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Liên hệ</a>
+                    <a class="text-light mb-2" href="{{url_for('index')}}"><i class="fa fa-angle-right me-2"></i>Trang chủ</a>
+                    <a class="text-light mb-2" href="{{url_for('about')}}"><i class="fa fa-angle-right me-2"></i>Giới thiệu</a>
+                    <a class="text-light mb-2" href="{{url_for('appointment')}}"><i class="fa fa-angle-right me-2"></i>Đặt lịch khám</a>
+                    <a class="text-light mb-2" href="{{url_for('list_member')}}"><i class="fa fa-angle-right me-2"></i>Đội ngũ bác sĩ</a>
+                    <a class="text-light" href="{{url_for('contact')}}"><i class="fa fa-angle-right me-2"></i>Liên hệ</a>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -70,3 +70,6 @@
 
 <!-- Template Javascript -->
 <script src="{{url_for('static', filename='js/main.js')}}"></script>
+<script>
+
+</script>

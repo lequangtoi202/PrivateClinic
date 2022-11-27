@@ -1,0 +1,44 @@
+{% extends 'layout/base.html' %}
+{% block header %}
+{% include 'layout/header_staff.html' %}
+
+{% endblock %}
+{% block content %}
+
+
+<!-- Team Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+
+        <div class="text-center mx-auto mb-5" style="max-width: 500px;">
+            <h5 class="d-inline-block text-primary text-uppercase text-center border-5">Thông tin chi tiết Bác sĩ </h5>
+        </div>
+        {% if member_info %}
+        <div>
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <img src="{{member_info.hinhAnh}}" class="img-fluid" alt="{{ member_info.hinhAnh }}"/>
+                </div>
+                <div class="col-md-8 col-sm-6">
+                    <h5>Họ tên: <span>{{ member_info.hoTen }}</span></h5>
+                    {% if role == 'UserRole.DOCTOR' %}
+                    <p>Chuyên khoa: <span>{{ member_info.chuyenMon }}</span></p>
+                    <p>Chứng chỉ: <span>{{ member_info.chungChi }}</span></p>
+                    {% endif %}
+                    {% if role == 'UserRole.NURSE' %}
+                    <p>Bằng cấp: <span>{{ member_info.bangCap }}</span></p>
+                    {% endif %}
+                    <p>Địa chỉ email: <span>{{ member_info.email }}</span></p>
+                    <p>Số điện thoại: <span>{{ member_info.dienThoai }}</span></p>
+                    <p>Ngày sinh: <span>{{ member_info.ngaySinh }}</span></p>
+                    <p>Địa chỉ: <span>{{ member_info.diaChi }}</span></p>
+
+                </div>
+            </div>
+        </div>
+        {% endif%}
+    </div>
+</div>
+<!-- Team End -->
+
+{% endblock %}
