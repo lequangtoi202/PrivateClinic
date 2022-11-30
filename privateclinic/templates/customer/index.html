@@ -163,51 +163,57 @@
                     <h1 class="mb-4">Đặt Lịch Khám</h1>
                     <form method="post" action="/enroll_medical_exam">
                         <div class="row g-3">
-                            <div class="col-12 col-sm-6">
-                                <input type="text" name="name" required class="form-control bg-light border-0"
-                                       placeholder="Họ tên"
-                                       style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="time bg-light border-0">
-                                    <label class="">Giới tính: </label>
-                                    <select name="gender" id="gender"
-                                            style="width: 100px;border: none;outline: none; border-radius: 8px;">
-                                        <option value="1">Nam</option>
-                                        <option value="0">Nữ</option>
-                                    </select>
+                            <div class="row g-3">
+                                <p>Thông tin cá nhân:</p>
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" name="name" required class="form-control bg-light border-0"
+                                           placeholder="Họ tên"
+                                           style="height: 55px;">
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div id="dob" data-target-input="nearest">
-                                    <input type="date"
-                                           required
-                                           name="dob"
-                                           class="form-control bg-light border-0 datetimepicker-input"
-                                           placeholder="Ngày sinh" data-target="#dob" data-toggle="datetimepicker"
+                                <div class="col-12 col-sm-6">
+                                    <div class="time bg-light border-0">
+                                        <label class="">Giới tính: </label>
+                                        <select name="gender" id="gender"
+                                                style="width: 100px;border: none;outline: none; border-radius: 8px;">
+                                            <option value="1">Nam</option>
+                                            <option value="0">Nữ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="date" id="dob" data-target-input="nearest">
+                                        <input type="date"
+                                               name="dob"
+                                               required
+                                               class="form-control bg-light border-0 datetimepicker-input"
+                                               placeholder="Ngày sinh" data-target="#dob" data-toggle="datetimepicker"
+                                               style="height: 55px;">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="email" name="email" required class="form-control bg-light border-0"
+                                           placeholder="Địa chỉ Email"
+                                           style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" name="phone" required class="form-control bg-light border-0"
+                                           placeholder="Số điện thoại"
+                                           style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" name="address" class="form-control bg-light border-0"
+                                           placeholder="Địa chỉ"
                                            style="height: 55px;">
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="email" required name="email" class="form-control bg-light border-0"
-                                       placeholder="Địa chỉ Email"
-                                       style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="text" required name="phone" class="form-control bg-light border-0"
-                                       placeholder="Số điện thoại"
-                                       style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="text" required name="address" class="form-control bg-light border-0"
-                                       placeholder="Địa chỉ"
-                                       style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div id="date" data-target-input="nearest">
+
+                            <div class="row g-3">
+                                <div>Thời gian khám:</div>
+                                <div class="col-12 col-sm-6">
+                                <div class="date" id="date" data-target-input="nearest">
                                     <input type="date"
-                                           required
                                            name="date_schedule"
+                                           required
                                            class="form-control bg-light border-0 datetimepicker-input"
                                            placeholder="Ngày khám" data-target="#date_schedule"
                                            data-toggle="datetimepicker"
@@ -225,6 +231,8 @@
                                     </select>
                                 </div>
                             </div>
+                            </div>
+
                             <div class="col-12">
                                 <button class="btn btn-primary w-100 py-3" type="submit">Đặt Lịch Khám</button>
                             </div>

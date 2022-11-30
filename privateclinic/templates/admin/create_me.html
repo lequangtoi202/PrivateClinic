@@ -1,0 +1,74 @@
+{% extends 'admin/model/create.html' %}
+
+{% block body %}
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link " href="/admin/thuoc/">List</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/admin/thuoc/new/?url=/admin/thuoc/">Create</a>
+    </li>
+</ul>
+<div>
+    <form action="/admin/thuoc/new" method="POST" role="form" class="admin-form" enctype="multipart/form-data">
+        <fieldset>
+            <div class="form-group ">
+                <label for="tenThuoc" class="control-label">Tên thuốc
+                    <strong style="color: red">&#42;</strong>
+                </label>
+                <input class="form-control" id="tenThuoc" maxlength="50" name="tenThuoc" required type="text" value="">
+            </div>
+            <div class="form-group ">
+                <label for="moTa" class="control-label">Mô tả
+
+                    <strong style="color: red">&#42;</strong>
+                </label>
+                <textarea class="form-control" id="moTa" name="moTa" required type="text" value=""></textarea>
+            </div>
+            <div class="form-group ">
+                <label for="soLuong" class="control-label">Số lượng
+                    <strong style="color: red">&#42;</strong>
+                </label>
+                <input class="form-control" id="soLuong"
+                       name="soLuong" required type="number" min="0" value="">
+            </div>
+            <div class="form-group ">
+                <label for="giaBan" class="control-label">Giá bán
+                    <strong style="color: red">&#42;</strong>
+                </label>
+                <input class="form-control" id="giaBan" name="giaBan" required type="number" value="">
+            </div>
+            <div class="form-group ">
+                <label for="is_active" class="control-label" style="display: block">Is_active
+                    <strong style="color: red">&#42;</strong>
+                </label>
+                <input checked class="form-control-lg" id="is_active" name="is_active" required type="checkbox"
+                       value="y">
+            </div>
+            <div class="form-group ">
+                <label for="donVi" class="control-label">Đơn vị
+                    <strong style="color: red">&#42;</strong>
+                </label>
+                <input class="form-control" id="donVi" name="donVi" required type="text"
+                       value="">
+            </div>
+            <div class="form-group ">
+                <label for="hinhAnh" class="control-label">Hình ảnh
+                    &nbsp;
+                </label>
+                <input class="form-control" id="hinhAnh" maxlength="300" name="hinhAnh" type="file" value="">
+            </div>
+            <hr>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 submit-row">
+                    <input type="submit" class="btn btn-primary" value="Save"/>
+                    <input name="_add_another" type="submit" class="btn btn-secondary" value="Save and Add Another"/>
+                    <input name="_continue_editing" type="submit" class="btn btn-secondary"
+                           value="Save and Continue Editing"/>
+                    <a href="/admin/thuoc/" class="btn btn-danger" role="button">Cancel</a>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

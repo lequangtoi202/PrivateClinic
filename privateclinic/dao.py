@@ -1,7 +1,9 @@
 from privateclinic.models import NhanVien, ThoiGian, BacSi, Yta, DanhSachKhamBenh, \
-    ChiTietDSKham, BenhNhan, TaiKhoan, Thuoc, PhieuKham, PhieuKham_Thuoc, QuiDinh, HoaDon
+    ChiTietDSKham, BenhNhan, TaiKhoan, Thuoc, PhieuKham, PhieuKham_Thuoc, QuiDinh, HoaDon,UserRole
 import hashlib
 from privateclinic import db, app
+from sqlalchemy import func
+from sqlalchemy.sql import extract
 
 
 def list_doctor_and_nurse():
@@ -19,6 +21,10 @@ def get_staff_by_id(id):
     return NhanVien.query.get(id)
 
 
+def get_all_staff():
+    return NhanVien.query.all()
+
+
 def get_doctor_by_id(id):
     sql = 'SELECT * FROM privateclinic.nhan_vien as n ' \
           'INNER JOIN privateclinic.bac_si as nv ' \
@@ -30,6 +36,11 @@ def get_doctor_by_id(id):
 
 def get_role(id):
     return TaiKhoan.query.filter(TaiKhoan.id.__eq__(id)).first()
+
+
+def get_all_role():
+    roles = [e for e in UserRole]
+    return roles
 
 
 def get_nurse_by_id(id):
@@ -139,6 +150,12 @@ def get_medicine_by_id(id):
     return Thuoc.query.get(id)
 
 
+def create_new_medicine(tenThuoc, moTa, soLuong, giaBan, is_active, donVi, hinhAnh):
+    thuoc = Thuoc(tenThuoc=tenThuoc, moTa=moTa, soLuong=soLuong, giaBan=giaBan, is_active=is_active, donVi=donVi, hinhAnh=hinhAnh)
+    db.session.add(thuoc)
+    db.session.commit()
+
+
 def get_patient_by_id(id):
     return BenhNhan.query.get(id)
 
@@ -202,13 +219,51 @@ def get_all_medical_report_details_by_medical_report_id(id):
     return PhieuKham_Thuoc.query.filter_by(maPK=id).all()
 
 
-def create_receipt(tien_kham, tien_thuoc, tong_tien, maPK):
-    hoa_don = HoaDon(tienThuoc=tien_thuoc, tienKham=tien_kham, tongTien=tong_tien, maPK=maPK)
+def create_receipt(tien_kham, tien_thuoc, tong_tien, maPK, created_date):
+    hoa_don = HoaDon(tienThuoc=tien_thuoc, tienKham=tien_kham, tongTien=tong_tien, maPK=maPK, created_date=created_date)
     db.session.add(hoa_don)
     db.session.commit()
 
 
 def get_receipt_by_medical_report_id(maPK):
 
-    hoaDon = HoaDon.query.filter(HoaDon.maPK.__eq__(maPK)).all()
+    hoaDon = HoaDon.query.filter(HoaDon.maPK.__eq__(maPK)).first()
     return hoaDon
+
+
+def create_new_acc(name, username, password, is_active, avatar, user_role, maNV):
+    tai_khoan = TaiKhoan(name=name, username=username, password=password, is_active=is_active, avatar=avatar, user_role=user_role, maNV=maNV)
+    db.session.add(tai_khoan)
+    db.session.commit()
+
+
+def revenue_stats(year):
+    return db.session.query(extract('month', HoaDon.created_date), func.sum(HoaDon.tongTien))\
+        .filter(extract('year', HoaDon.created_date) == year)\
+        .group_by(extract('month', HoaDon.created_date)).all()
+
+
+def medical_exam_frequency_stats(month, year1):
+    return db.session.query(extract('day', PhieuKham.ngayKham), func.count(PhieuKham.maPK), func.sum(HoaDon.tongTien))\
+        .join(HoaDon, HoaDon.maPK.__eq__(PhieuKham.maPK))\
+        .filter(extract('month', PhieuKham.ngayKham) == month)\
+        .filter(extract('year', PhieuKham.ngayKham) == year1)\
+        .group_by(PhieuKham.ngayKham).all()
+
+
+def revenue_by_month(year, month):
+    return db.session.query(func.sum(HoaDon.tongTien))\
+        .filter(extract('year', HoaDon.created_date) == year)\
+        .filter(extract('month', HoaDon.created_date) == month).first()
+
+
+def medicine_using_stats(year, month):
+    return db.session.query(PhieuKham_Thuoc.maThuoc, Thuoc.tenThuoc, Thuoc.donVi, func.sum(PhieuKham_Thuoc.soLuong), func.count(PhieuKham_Thuoc.maThuoc))\
+        .join(PhieuKham, PhieuKham_Thuoc.maPK.__eq__(PhieuKham.maPK))\
+        .join(Thuoc, Thuoc.maThuoc.__eq__(PhieuKham_Thuoc.maThuoc))\
+        .filter(extract('year', PhieuKham.ngayKham) == year) \
+        .filter(extract('month', PhieuKham.ngayKham) == month)\
+        .group_by(PhieuKham_Thuoc.maThuoc)\
+        .order_by(PhieuKham_Thuoc.maThuoc)\
+        .all()
+

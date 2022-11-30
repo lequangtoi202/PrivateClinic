@@ -214,7 +214,8 @@ function payment(){
                 "tien_kham": parseFloat(tien_kham.replace(',', '')),
                 "tien_thuoc": parseFloat(tien_thuoc.replace(',', '')),
                 "tong_tien": parseFloat(tong_tien.replace(',', '')),
-                "maPK": parseInt(maPK)
+                "maPK": parseInt(maPK),
+                "created_date": new Date().toJSON().slice(0, 10)
             }),
             headers: {
                 "Content-Type": "application/json"

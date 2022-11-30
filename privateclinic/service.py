@@ -1,4 +1,29 @@
-from privateclinic import dao
+from privateclinic import dao, app
+import csv
+import os
+
+
+def export_csv(date):
+    list_patients = dao.get_all_patients_by_date(date=date)
+    p = os.path.join(app.root_path, "list_patients.csv")
+    listP = [
+    ]
+    for pa in list_patients:
+        listP.append({
+            "maBN": pa.maBN,
+            'hoTen': pa.hoTen,
+            'dienThoai': '\'' + pa.dienThoai,
+            'email': pa.email,
+            'ngaySinh': pa.ngaySinh,
+            'gioiTinh': pa.gioiTinh,
+            'diaChi': pa.diaChi
+        })
+    with open(p, "w", encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=['maBN', 'hoTen', 'dienThoai', 'email', 'ngaySinh', 'gioiTinh', 'diaChi'])
+        writer.writeheader()
+        for patient in listP:
+            writer.writerow(patient)
+    return p
 
 
 def get_list_times():
@@ -14,8 +39,16 @@ def get_staff_by_id(id):
     return bac_si
 
 
+def get_all_staff():
+    return dao.get_all_staff()
+
+
 def check_role(id):
     return dao.get_role(id).user_role
+
+
+def get_all_role():
+    return dao.get_all_role()
 
 
 def get_all_doctor_and_nurse():
@@ -55,6 +88,14 @@ def get_all_medicine_paginate(page, per_page):
 
 def get_medicine_by_id(id):
     return dao.get_medicine_by_id(id=id)
+
+
+def create_new_medicine(tenThuoc, moTa, soLuong, giaBan, is_active, donVi, hinhAnh):
+    return dao.create_new_medicine(tenThuoc, moTa, soLuong, giaBan, is_active, donVi, hinhAnh)
+
+
+def create_new_acc(name, username, password, is_active, avatar, user_role, maNV):
+    return dao.create_new_acc(name=name, username=username, password=password, is_active=is_active, avatar=avatar, user_role=user_role, maNV=maNV)
 
 
 def find_medicine_by_name(kw, page, per_page):
@@ -132,9 +173,26 @@ def get_rule_by_id(id):
     return dao.get_rule_by_id(id)
 
 
-def create_receipt(tien_kham, tien_thuoc, tong_tien, maPK):
-    return dao.create_receipt(tien_kham, tien_thuoc, tong_tien, maPK)
+def create_receipt(tien_kham, tien_thuoc, tong_tien, maPK, created_date):
+    return dao.create_receipt(tien_kham, tien_thuoc, tong_tien, maPK, created_date)
 
 
-def get_receipt_by_medical_report_id(id):
-    return dao.get_receipt_by_medical_report_id(maPK=id)
+def get_receipt_by_medical_report_id(maPK):
+    return dao.get_receipt_by_medical_report_id(maPK=maPK)
+
+
+def revenue_stats(year):
+    return dao.revenue_stats(year)
+
+
+def medical_exam_frequency_stats(month, year1):
+    return dao.medical_exam_frequency_stats(month, year1)
+
+
+def revenue_by_month(year, month):
+    return dao.revenue_by_month(year, month)
+
+
+def medicine_using_stats(year, month):
+    return dao.medicine_using_stats(year, month)
+

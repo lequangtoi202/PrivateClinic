@@ -3,6 +3,7 @@
 {% block header %}
 {% include 'layout/header_staff.html' %}
 {% endblock %}
+{% block title %}Thanh toán{% endblock %}
 
 {% block content %}
 
@@ -20,7 +21,7 @@
                         <label class="col-form-label">Mã phiếu khám:</label>
                     </div>
                     <div class="col-12 col-sm-4">
-                        <input type="text"  name="maPK" class="form-control bg-light border-0"
+                        <input type="text" name="maPK" class="form-control bg-light border-0"
                                placeholder="Nhập mã phiếu khám"
                                style="height: 55px;">
                     </div>
@@ -70,12 +71,20 @@
                     </thead>
                     <tbody id="table">
                     {% for item in receipt_info.thuoc %}
-                        <tr>
-                            <td><div>{{item.ten_thuoc}}</div></td>
-                            <td><div>{{item.so_luong}}</div></td>
-                            <td><div>{{ "{:,.0f}".format(item.gia_ban) }}/{{item.don_vi}}</div></td>
-                            <td><div>{{ "{:,.0f}".format(item.tong) }} VNĐ</div></td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <div>{{item.ten_thuoc}}</div>
+                        </td>
+                        <td>
+                            <div>{{item.so_luong}}</div>
+                        </td>
+                        <td>
+                            <div>{{ "{:,.0f}".format(item.gia_ban) }}/{{item.don_vi}}</div>
+                        </td>
+                        <td>
+                            <div>{{ "{:,.0f}".format(item.tong) }} VNĐ</div>
+                        </td>
+                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>
@@ -83,16 +92,25 @@
             {%if receipt_info%}
             <div><h5>Tổng số lượng:<span> {{receipt_info.total_quan}}</span></h5></div>
             <div><h5>Tiền khám:<span id="tien_kham"> {{ "{:,.0f}".format(tien_kham) }} VNĐ</span></h5></div>
-            <div><h5>Tiền thuốc:<span id="tien_thuoc"> {{ "{:,.0f}".format(receipt_info.total_amount) }}  VNĐ</span></h5></div>
-            <div><h5>Thành tiền:<span id="tong_tien"> {{ "{:,.0f}".format(receipt_info.total_amount + tien_kham) }}  VNĐ</span></h5></div>
+            <div><h5>Tiền thuốc:<span id="tien_thuoc"> {{ "{:,.0f}".format(receipt_info.total_amount) }}  VNĐ</span>
+            </h5></div>
+            <div><h5>Thành tiền:<span
+                    id="tong_tien"> {{ "{:,.0f}".format(receipt_info.total_amount + tien_kham) }}  VNĐ</span></h5></div>
             {%endif%}
-            <div class="col-12 mb-5">
-                        <button type="button" class="btn-right-position btn btn-danger" onclick="payment()"
-                                style="width:120px; height: 55px;">Thanh Toán
+            <div class="mt-4">
+                <div class="col-12 d-flex">
+                    <form action="{{url_for('get_pdf', maPK=phieu_kham.maPK)}}" , method="post">
+                        <button type="submit" class=" btn btn-danger"
+                                style="width:120px; height: 55px;">In hóa đơn
                         </button>
+                    </form>
+                    <button type="button" class="btn-right-position btn btn-danger" onclick="payment()"
+                            style="width:120px; height: 55px;">Thanh Toán
+                    </button>
+                </div>
             </div>
-            {%endif%}
 
+            {%endif%}
 
 
         </div>

@@ -146,6 +146,7 @@ class HoaDon(db.Model):
     tienThuoc = Column(Float, nullable=False)
     tienKham = Column(Float, nullable=False)
     tongTien = Column(Float, nullable=False)
+    created_date = Column(DATETIME, nullable=False)
     maPK = Column(BIGINT, ForeignKey(PhieuKham.maPK), unique=True, nullable=False)
 
 

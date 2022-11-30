@@ -1,10 +1,10 @@
 from privateclinic import app, service, db
-from privateclinic.models import NhanVien, ThoiGian, BacSi, Yta, DanhSachKhamBenh, \
-    ChiTietDSKham, BenhNhan, TaiKhoan, Thuoc, PhieuKham, PhieuKham_Thuoc, QuiDinh, HoaDon, UserRole
+from privateclinic.models import NhanVien, BenhNhan, TaiKhoan, Thuoc, HoaDon, UserRole
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin, BaseView, expose
-from flask import redirect
+from flask import redirect, request
 from flask_login import logout_user, current_user
+from datetime import datetime
 
 admin = Admin(app=app, name='MEDINOVA', template_mode='bootstrap4')
 
@@ -42,6 +42,14 @@ class TaiKhoanView(AuthenticatedModelView):
         'name': 'Tên hiển thị'
     }
 
+    create_template = '/admin/create_acc.html'
+
+    @expose('/new/')
+    def create_view(self):
+        self._template_args['staffs'] = service.get_all_staff()
+        self._template_args['user_role'] = service.get_all_role()
+        return super(TaiKhoanView, self).create_view()
+
 
 class BenhNhanView(AuthenticatedModelView):
     can_export = True
@@ -57,7 +65,7 @@ class BenhNhanView(AuthenticatedModelView):
     }
 
 
-class ThuocView(AuthenticatedModelView):
+class ThuocView(AuthenticatedModelView, BaseView):
     can_export = True
     column_filters = ['tenThuoc', 'moTa']
     column_searchable_list = ['tenThuoc', 'moTa']
@@ -71,31 +79,7 @@ class ThuocView(AuthenticatedModelView):
         'hinhAnh': 'Hình Ảnh'
 
     }
-
-
-class QuiDinhView(AuthenticatedModelView):
-    can_export = True
-    column_filters = ['tenQD', 'giaTri']
-    column_searchable_list = ['tenQD', 'giaTri']
-    page_size = 6
-    column_labels = {
-        'tenQD': 'Tên qui định',
-        'giaTri': 'Giá trị'
-
-    }
-
-
-class PhieuKhamView(AuthenticatedModelView):
-    can_export = True
-    column_filters = ['trieuChung', 'chuanDoan']
-    column_searchable_list = ['trieuChung', 'chuanDoan']
-    page_size = 6
-    column_labels = {
-        'ngayKham': 'Ngày khám',
-        'trieuChung': 'Triệu chứng',
-        'chuanDoan': 'Chuẩn đoán'
-
-    }
+    create_template = '/admin/create_me.html'
 
 
 class HoaDonView(AuthenticatedModelView):
@@ -119,20 +103,28 @@ class LogoutView(AuthenticatedView):
 class StatsView(AuthenticatedView):
     @expose('/')
     def index(self):
-        return self.render('admin/stats.html')
+        year = request.args.get('year', default=datetime.now().year)
+
+        year1 = request.args.get('year1', default=datetime.now().year)
+
+        month = request.args.get('month', default=datetime.now().month)
+
+        year2 = request.args.get('year2', default=datetime.now().year)
+
+        month2 = request.args.get('month2', default=datetime.now().month)
+
+        return self.render('admin/stats.html',
+                           month_stats=service.revenue_stats(year=year),
+                           exam_frequancy=service.medical_exam_frequency_stats(month=month, year1=year1),
+                           revenue_by_month=service.revenue_by_month(year=year1, month=month),
+                           medicine_using=service.medicine_using_stats(year=year2, month=month2)
+                           )
 
 
-# admin.add_view(QuiDinhView(QuiDinh, db.session, name='Qui định'))
-# admin.add_view(AuthenticatedModelView(ThoiGian, db.session, name='Thời gian làm việc'))
 admin.add_view(NhanVienView(NhanVien, db.session, name='Nhân viên'))
 admin.add_view(TaiKhoanView(TaiKhoan, db.session, name='Tài khoản'))
 admin.add_view(BenhNhanView(BenhNhan, db.session, name='Bệnh nhân'))
 admin.add_view(ThuocView(Thuoc, db.session, name='Thuốc'))
-admin.add_view(PhieuKhamView(PhieuKham, db.session, name='Phiếu khám bệnh'))
-admin.add_view(AuthenticatedModelView(DanhSachKhamBenh, db.session, name='Danh sách khám bệnh'))
 admin.add_view(HoaDonView(HoaDon, db.session, name='Hóa đơn'))
-admin.add_view(AuthenticatedModelView(BacSi, db.session, name='Bác sĩ'))
-admin.add_view(AuthenticatedModelView(Yta, db.session, name='Y tá'))
-admin.add_view(AuthenticatedModelView(PhieuKham_Thuoc, db.session, name='Chi tiết phiếu khám'))
 admin.add_view(StatsView(name='Thống kê'))
 admin.add_view(LogoutView(name='Đăng xuất'))

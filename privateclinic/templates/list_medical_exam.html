@@ -1,8 +1,9 @@
 {% extends 'layout/base.html' %}
 {% block header %}
 {% include 'layout/header_staff.html' %}
-
 {% endblock %}
+{% block title %}Danh sách khám bệnh{% endblock %}
+
 {% block content %}
 <!-- About Start -->
 <div class="container-fluid py-5">
@@ -64,7 +65,7 @@
             </table>
         </div>
 
-        <button type="submit" class="btn-right-position btn btn-primary">Xuất danh sách</button>
+        <a href="/employee/list_medical_exam/export/{{date}}" class="btn-right-position btn btn-primary">Xuất danh sách</a>
         {% endif %}
 
     </div>

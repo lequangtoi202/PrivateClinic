@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row gx-5 mb-4">
+            <span style="visibility: hidden;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span><h5 class="d-inline-block text-primary text-center text-uppercase border-5">Hóa đơn</h5>
+        </div>
+        <div class="mt-5">
+
+            {%if phieu_kham%}
+            <div>Mã phiếu khám: {{phieu_kham.maPK}}</div>
+            <div>Ngày tạo: {{created_date}}</div>
+            <div>Ngày khám: {{phieu_kham.ngayKham}}</div>
+            <div>Mã bệnh nhân: {{phieu_kham.maBN}}</div>
+            <div>Tên bệnh nhân: {{benh_nhan.hoTen}}</div>
+            <div class="mt-5">
+                <table class="table border">
+                    <thead>
+                    <tr>
+                        <th scope="col">Tên thuốc</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Giá bán</th>
+                        <th scope="col">Tổng</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
+                    {% for item in receipt_info.thuoc %}
+                    <tr>
+                        <td>
+                            <div>{{item.ten_thuoc}}</div>
+                        </td>
+                        <td>
+                            <div>{{item.so_luong}}</div>
+                        </td>
+                        <td>
+                            <div>{{ "{:,.0f}".format(item.gia_ban) }}/{{item.don_vi}}</div>
+                        </td>
+                        <td>
+                            <div>{{ "{:,.0f}".format(item.tong) }} VNĐ</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {%if receipt_info%}
+            <div><h5>Tổng số lượng:<span> {{receipt_info.total_quan}}</span></h5></div>
+            <div><h5>Tiền khám:<span id="tien_kham"> {{ "{:,.0f}".format(tien_kham) }} VNĐ</span></h5></div>
+            <div><h5>Tiền thuốc:<span id="tien_thuoc"> {{ "{:,.0f}".format(receipt_info.total_amount) }}  VNĐ</span>
+            </h5></div>
+            <div><h5>Thành tiền:<span
+                    id="tong_tien"> {{ "{:,.0f}".format(receipt_info.total_amount + tien_kham) }}  VNĐ</span></h5></div>
+            {%endif%}
+
+            {%endif%}
+
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

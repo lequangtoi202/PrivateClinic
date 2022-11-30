@@ -1,11 +1,14 @@
-from datetime import date
+
+from datetime import date, datetime
 from privateclinic.models import UserRole
-from flask import render_template, request, redirect, url_for, flash, session, jsonify
+from flask import render_template, request, redirect, url_for, flash, session, jsonify, send_file, make_response
 
 from privateclinic import login, app, service
 from privateclinic.admin import *
 from flask_login import login_user, logout_user, login_required, current_user
 import cloudinary.uploader
+import pdfkit
+import hashlib
 
 ITEMS_PER_PAGE = 6
 
@@ -170,7 +173,13 @@ def filter_all_patients():
     list_patients = service.get_all_patients_by_date(date=date)
     if len(list_patients) <= 0:
         err_msg = "Không có thông tin bệnh nhân!"
-    return render_template("list_medical_exam.html", list_patients=list_patients, err_msg=err_msg)
+    return render_template("list_medical_exam.html", list_patients=list_patients, err_msg=err_msg, date=date)
+
+
+@app.route('/employee/list_medical_exam/export/<string:date>')
+def export_list_medical_exam(date):
+    l = service.export_csv(date=date)
+    return send_file(l)
 
 
 @app.route("/employee/account/<int:id>", methods=['POST', 'GET'])
@@ -311,7 +320,8 @@ def create_medical_report():
         soLuong = request.form.getlist('soLuong')
         thuoc = request.form.getlist('thuoc')
         try:
-            service.save_medical_report(ngayKham=ngayKham, trieuChung=trieuChung, chuanDoan=chuanDoan, maBN=maBN, list_cach_dung=cachDung, list_so_luong=soLuong, list_thuoc=thuoc)
+            service.save_medical_report(ngayKham=ngayKham, trieuChung=trieuChung, chuanDoan=chuanDoan, maBN=maBN,
+                                        list_cach_dung=cachDung, list_so_luong=soLuong, list_thuoc=thuoc)
             flash("Lập phiếu khám thành công!", 'success')
             return redirect(url_for('create_medical_report'))
         except:
@@ -339,7 +349,6 @@ def api_get_all_medicines():
 @app.route("/employee/payment", methods=['POST', 'GET'])
 @login_required
 def payment():
-
     if request.method == 'POST':
         id = request.form['maPK']
         is_paid = False
@@ -357,15 +366,35 @@ def payment():
             receipt_info = service.get_receipt_info(id)
             rule = service.get_rule_by_id(1)
 
-            return render_template("payment.html", phieu_kham=phieu_kham, benh_nhan=benh_nhan, receipt_info=receipt_info, tien_kham=int(rule.giaTri), is_paid=is_paid)
+            return render_template("payment.html", phieu_kham=phieu_kham, benh_nhan=benh_nhan,
+                                   receipt_info=receipt_info, tien_kham=int(rule.giaTri), is_paid=is_paid)
     return render_template("payment.html")
+
+
+@app.route("/employee/get_pdf/<maPK>", methods=['POST'])
+@login_required
+def get_pdf(maPK):
+    receipt = service.get_receipt_by_medical_report_id(maPK=maPK)
+    phieu_kham = service.get_medical_report_by_id(id=maPK)
+    benh_nhan = None
+    if phieu_kham is not None:
+        benh_nhan = service.get_patient_by_id(id=phieu_kham.maBN)
+    receipt_info = service.get_receipt_info(id=maPK)
+    rule = service.get_rule_by_id(1)
+    rendered = render_template("pdf.html", phieu_kham=phieu_kham, benh_nhan=benh_nhan,
+                               receipt_info=receipt_info, tien_kham=int(rule.giaTri), created_date=datetime.now())
+    pdf = pdfkit.from_string(rendered, False)
+    response = make_response(pdf)
+    response.headers['content-Type'] = 'application/pdf'
+    response.headers['content-Disposition'] = 'inline; filename=invoice.pdf'
+    return response
 
 
 @app.route("/api/employee/payment", methods=['POST'])
 def pay():
     data = request.json
     try:
-        service.create_receipt(data['tien_kham'], data['tien_thuoc'], data['tong_tien'], data['maPK'])
+        service.create_receipt(data['tien_kham'], data['tien_thuoc'], data['tong_tien'], data['maPK'], created_date=data['created_date'])
         return jsonify({'status': 200})
     except:
         return jsonify({'status': 400})
@@ -374,6 +403,53 @@ def pay():
 @login.user_loader
 def load_user(user_id):
     return service.get_user_by_id(user_id)
+
+# ADMIN
+
+
+@app.route("/admin/thuoc/new", methods=['POST'])
+def ad_new_medicine():
+    tenThuoc = request.form['tenThuoc']
+    moTa = request.form['moTa']
+    soLuong = int(request.form['soLuong'])
+    giaBan = float(request.form['giaBan'])
+    donVi = request.form['donVi']
+    is_active = True if request.form['is_active'] == 'y' else False
+    hinhAnh = ''
+    if request.files:
+        res = cloudinary.uploader.upload(request.files['hinhAnh'])
+        hinhAnh = res['secure_url']
+
+    try:
+        service.create_new_medicine(tenThuoc, moTa, soLuong, giaBan, is_active, donVi, hinhAnh)
+        flash("Create new medicine successfully!")
+
+    except:
+        flash("Create new medicine failed!", "error")
+    return redirect("/admin/thuoc")
+
+
+@app.route("/admin/taikhoan/new", methods=['POST'])
+def ad_new_tai_khoan():
+    name = request.form['name']
+    username = request.form['username']
+    pwd = request.form['password']
+    password = str(hashlib.md5(pwd.strip().encode('utf-8')).hexdigest())
+    is_active = True if request.form['is_active'] == 'y' else False
+    maNV = int(request.form['maNV'])
+    user_role = UserRole[request.form['user_role']]
+    avatar = ''
+    if request.files:
+        res = cloudinary.uploader.upload(request.files['avatar'])
+        avatar = res['secure_url']
+
+    try:
+        service.create_new_acc(name=name, username=username, password=password, is_active=is_active, avatar=avatar, user_role=user_role, maNV=maNV)
+        flash("Create new account successfully!")
+
+    except:
+        flash("Create new account failed!", "error")
+    return redirect("/admin/taikhoan")
 
 
 if __name__ == '__main__':
