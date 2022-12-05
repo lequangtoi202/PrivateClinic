@@ -2,18 +2,20 @@
 
 {% block body %}
 <h1 class="text-center text-primary">THỐNG KÊ - BÁO CÁO</h1>
-<div class="text-center text mb-4">Thống kê doanh thu và tần suất khám</div>
+<div class="text-center text font-weight-bold  m-5">Thống kê doanh thu và tần suất khám</div>
 <div class="row">
     <div class="col-md-5 col-xs-12">
         <table class="table">
             <tr>
+                <th>STT</th>
                 <th>Ngày</th>
                 <th>Số lần khám</th>
                 <th>Doanh thu</th>
                 <th>Tỷ lệ</th>
             </tr>
-            {% for s in exam_frequancy%}
+            {% for s in exam_frequency%}
             <tr>
+                <td>{{exam_frequency.index(s)+1}}</td>
                 <td>{{s[0]}}</td>
                 <td>{{s[1]}}</td>
                 <td>{{ "{:,.1f}".format(s[2]) }} VNĐ</td>
@@ -22,7 +24,7 @@
             {% endfor %}
         </table>
     </div>
-    <div class="col-md-5 col-xs-12" style="width:90%;">
+    <div class="col-md-7 col-xs-12" style="width:90%;">
         <form>
             <div class="form-group">
                 <input type="number" min="1" max="12" name="month" class="form-control" placeholder="Nhập tháng...">
@@ -35,11 +37,12 @@
         <canvas id="frequencyMonthStats"></canvas>
     </div>
 </div>
-<div class="text-center text mb-4">Thống kê sử dụng thuốc</div>
+<div class="text-center text font-weight-bold mb-4">Thống kê sử dụng thuốc</div>
 <div class="row">
     <div class="col-md-5 col-xs-12">
         <table class="table">
             <tr>
+                <th>STT</th>
                 <th>Thuốc</th>
                 <th>Đơn vị tính</th>
                 <th>Số lượng</th>
@@ -47,6 +50,7 @@
             </tr>
             {% for s in medicine_using%}
             <tr>
+                <td>{{medicine_using.index(s)+1}}</td>
                 <td>{{s[1]}}</td>
                 <td>{{s[2]}}</td>
                 <td>{{s[3]}}</td>
@@ -55,7 +59,7 @@
             {% endfor %}
         </table>
     </div>
-    <div class="col-md-5 col-xs-12" style="width:90%;">
+    <div class="col-md-7 col-xs-12" style="width:90%;">
         <form>
             <div class="form-group">
                 <input type="number" min="1" max="12" name="month2" class="form-control" placeholder="Nhập tháng...">
@@ -85,8 +89,8 @@
       colors.push(`rgba(${r}, ${g}, ${b}, 0.6)`)
       borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`)
   {% endfor %}
-  {% for s in exam_frequancy%}
-      labels2.push({{s[0]}})
+  {% for s in exam_frequency%}
+      labels2.push('{{s[0]}}')
       data2.push({{s[1]}})
 
       r = parseInt(Math.random() * 255)

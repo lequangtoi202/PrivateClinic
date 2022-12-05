@@ -1,12 +1,11 @@
 from privateclinic import app, service, db
 from privateclinic.models import NhanVien, BenhNhan, TaiKhoan, Thuoc, HoaDon, UserRole
 from flask_admin.contrib.sqla import ModelView
-from flask_admin import Admin, BaseView, expose
+from flask_admin import Admin, BaseView, expose, AdminIndexView
 from flask import redirect, request
 from flask_login import logout_user, current_user
 from datetime import datetime
 
-admin = Admin(app=app, name='MEDINOVA', template_mode='bootstrap4')
 
 
 class AuthenticatedModelView(ModelView):
@@ -100,11 +99,20 @@ class LogoutView(AuthenticatedView):
         return redirect('/employee/login')
 
 
+class MyAdminView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        year1 = request.args.get('year1', default=datetime.now().year)
+
+        month = request.args.get('month', default=datetime.now().month)
+        return self.render('admin/index.html',
+                           exam_frequency=service.medical_exam_frequency_stats(month=month, year1=year1),
+                           revenue_by_month=service.revenue_by_month(year=year1, month=month))
+
+
 class StatsView(AuthenticatedView):
     @expose('/')
     def index(self):
-        year = request.args.get('year', default=datetime.now().year)
-
         year1 = request.args.get('year1', default=datetime.now().year)
 
         month = request.args.get('month', default=datetime.now().month)
@@ -114,13 +122,13 @@ class StatsView(AuthenticatedView):
         month2 = request.args.get('month2', default=datetime.now().month)
 
         return self.render('admin/stats.html',
-                           month_stats=service.revenue_stats(year=year),
-                           exam_frequancy=service.medical_exam_frequency_stats(month=month, year1=year1),
+                           exam_frequency=service.medical_exam_frequency_stats(month=month, year1=year1),
                            revenue_by_month=service.revenue_by_month(year=year1, month=month),
                            medicine_using=service.medicine_using_stats(year=year2, month=month2)
                            )
 
 
+admin = Admin(app=app, name='MEDINOVA', template_mode='bootstrap4', index_view=MyAdminView())
 admin.add_view(NhanVienView(NhanVien, db.session, name='Nhân viên'))
 admin.add_view(TaiKhoanView(TaiKhoan, db.session, name='Tài khoản'))
 admin.add_view(BenhNhanView(BenhNhan, db.session, name='Bệnh nhân'))

@@ -21,8 +21,8 @@
                 </div>
                 <div class="col-md-8 col-sm-6">
                     <h1>{{ medicine.tenThuoc }}</h1>
-                    <p>{{ medicine.moTa|safe }}</p>
-                    <h3>{{ "{:,.1f}".format(medicine.giaBan) }} VNĐ / {{medicine.donVi}}</h3>
+                    <p>Công dụng: {{ medicine.moTa|safe }}</p>
+                    <h4>Giá bán: {{ "{:,.1f}".format(medicine.giaBan) }} VNĐ / {{medicine.donVi}}</h4>
                 </div>
             </div>
         </div>

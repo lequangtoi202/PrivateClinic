@@ -1,3 +1,5 @@
+import datetime
+
 from privateclinic import dao, app
 import csv
 import os
@@ -64,7 +66,7 @@ def get_user_by_id(maNV):
 def enroll_medical_exam(name, phone, email, dob, gender, address, date_schedule, time_id):
     if dao.get_time_by_date_by_id(ngayKham=date_schedule, time_id=time_id):
         return "Tgian đã đc đặt trc"
-    elif dao.count_total_patients_in_date(ngayKham=date_schedule).soLuong >= 10:
+    elif dao.count_total_patients_in_date(ngayKham=date_schedule).soLuong >= 40:
         return "Số lượng người đăng ký khám đã đạt giới hạn. Vui lòng đặt ngày khác!"
     else:
         return dao.enroll_schedule_exam(name=name, phone=phone, email=email, dob=dob, gender=gender, address=address, date_schedule=date_schedule, time_id=time_id)
@@ -181,18 +183,26 @@ def get_receipt_by_medical_report_id(maPK):
     return dao.get_receipt_by_medical_report_id(maPK=maPK)
 
 
-def revenue_stats(year):
-    return dao.revenue_stats(year)
-
-
 def medical_exam_frequency_stats(month, year1):
+    if month == '':
+        month = datetime.datetime.now().month
+    if year1 == '':
+        year1 = datetime.datetime.now().year
     return dao.medical_exam_frequency_stats(month, year1)
 
 
 def revenue_by_month(year, month):
-    return dao.revenue_by_month(year, month)
+    if month == '':
+        month = datetime.datetime.now().month
+    if year == '':
+        year = datetime.datetime.now().year
+    return dao.revenue_by_month(year=year, month=month)
 
 
 def medicine_using_stats(year, month):
+    if month == '':
+        month = datetime.datetime.now().month
+    if year == '':
+        year = datetime.datetime.now().year
     return dao.medicine_using_stats(year, month)
 

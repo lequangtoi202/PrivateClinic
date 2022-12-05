@@ -150,54 +150,6 @@ class HoaDon(db.Model):
     maPK = Column(BIGINT, ForeignKey(PhieuKham.maPK), unique=True, nullable=False)
 
 
-class BaoCaoDoanhThuThang(db.Model):
-    __tablename__ = 'bc_doanh_thu'
-
-    maBC = Column(BIGINT, primary_key=True, autoincrement=True)
-    thoiGian = Column(DATE, nullable=False)
-    tongCong = Column(Float, nullable=False)
-    ctBaoCao = relationship('ChiTietBaoCaoDoanhThuThang', backref='bc_doanh_thu', lazy=True)
-
-
-class ChiTietBaoCaoDoanhThuThang(db.Model):
-    __tablename__ = 'ctbc_doanh_thu'
-
-    maCTBC = Column(BIGINT, primary_key=True, autoincrement=True)
-    ngayKham = Column(DATE, nullable=False)
-    soBenhNhan = Column(Integer, nullable=False)
-    doanhThu = Column(Float, nullable=False)
-    tyLe = Column(Float, nullable=False)
-    maBC = Column(BIGINT, ForeignKey(BaoCaoDoanhThuThang.maBC, ondelete='CASCADE'), nullable=False)
-
-
-class BaoCaoSuDungThuoc(db.Model):
-    __tablename__ = 'bc_sd_thuoc'
-
-    maBC = Column(BIGINT, primary_key=True, autoincrement=True)
-    thoiGian = Column(DATE, nullable=False)
-    ctBaoCao = relationship('ChiTietBaoCaoSuDungThuoc', backref='bc_sd_thuoc', lazy=True)
-
-
-class ChiTietBaoCaoSuDungThuoc(db.Model):
-    __tablename__ = 'ctbc_sd_thuoc'
-
-    maCTBC = Column(BIGINT, primary_key=True, autoincrement=True)
-    tenThuoc = Column(String(50), nullable=False)
-    soLanDung = Column(Integer, nullable=False)
-    donVi = Column(String(10), nullable=False)
-    soLuong = Column(Integer, nullable=False)
-    maBC = Column(BIGINT, ForeignKey(BaoCaoSuDungThuoc.maBC, ondelete='CASCADE'), nullable=False)
-
-
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        # t = Thuoc(tenThuoc='Paracetamol', soLuong=200, giaBan=12000, is_active=True, donVi='Vỷ', moTa='Paracetamol thường được chỉ định điều trị trong các trường hợp đau và sốt từ nhẹ đến vừa như đau đầu, đau cơ, đau khớp, đau lưng, đau răng, hạ sốt... Thuốc cũng có tác dụng giảm đau đối với người bị viêm khớp nhẹ, trường hợp viêm nặng hơn như viêm sưng khớp cơ thì việc sử dụng Paracetamol sẽ không hiệu quả.')
-        # t1 = Thuoc(tenThuoc='Thuốc Farzincol 10Mg Pharmedic Hỗ Trợ Bổ Sung Kẽm Vào Chế Độ Ăn', soLuong=100, giaBan=580,
-        #            is_active=True, moTa=' Farzincol của công ty cổ phần dược phẩm dược liệu Pharmedic, thành phần chính kẽm gluconat'
-        #                                 ' 70 mg (tương đương 10 mg kẽm), là thuốc dùng để điều trị bổ sung kẽm vào chế độ ăn trong các trường hợp: Bệnh còi xương, chậm tăng trưởng ở trẻ em. Phụ nữ mang thai và bà mẹ đang cho con bú. Chế độ ăn thiếu cân bằng hoặc kiêng ăn. Nuôi ăn lâu dài qua đường tĩnh mạch. Tiêu chảy cấp và mãn tính. Điều trị thiếu kẽm: Thiếu kẽm nhẹ và vừa trong các trường hợp: Suy dinh dưỡng nhẹ và vừa. Rối loạn đường tiêu hóa: Chán ăn, chậm tiêu, táo bón nhẹ, buồn nôn và nôn khi mang thai. Khó ngủ, mất ngủ, trẻ khóc đêm, suy nhược, nhức đầu...', donVi='Viên')
-        #
-        # bn = BenhNhan(hoTen='Lê Quang Tới', dienThoai='0868832530', email='quangtoile@gmail.com', ngaySinh='2002/09/25', gioiTinh=True, diaChi='54, Dương Cát Lợi, thị trấn Nhà Bè')
-        #
-        # db.session.add_all([t, t1, bn])
-        # db.session.commit()

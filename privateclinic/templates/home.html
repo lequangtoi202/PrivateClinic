@@ -7,16 +7,16 @@
 
 {% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            {% if category == 'success' %}
-            <div class="alert alert-success text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
-            {% endif %}
-            {% if category == 'error' %}
-            <div class="alert alert-danger text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'success' %}
+<div class="alert alert-success text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
+{% endif %}
+{% if category == 'error' %}
+<div class="alert alert-danger text-center mt-3 text-center" style="width: 50%; margin: 16px auto;">{{ message }}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
 {% endwith %}
 <!-- Hero Start -->
 <div class="container-fluid bg-primary py-5 mb-5 hero-header">
@@ -28,7 +28,8 @@
                 <h1 class="display-1 text-white mb-md-4">Giải pháp chăm sóc sức khỏe tốt nhất</h1>
                 <div class="pt-2">
                     <a href="#search" class="btn btn-light rounded-pill py-md-3 px-md-5 mx-2">Tìm kiếm</a>
-                    <a href="/employee/appointment" class="btn btn-outline-light rounded-pill py-md-3 px-md-5 mx-2">Đặt lịch khám</a>
+                    <a href="/employee/appointment" class="btn btn-outline-light rounded-pill py-md-3 px-md-5 mx-2">Đặt
+                        lịch khám</a>
                 </div>
             </div>
         </div>
@@ -166,7 +167,9 @@
                     <form method="post" action="/employee/enroll_medical_exam">
                         <div class="row g-3">
                             <div class="row g-3">
-                                <p>Thông tin cá nhân:</p>
+                                <div class="position-relative mb-2">
+                                    <div class="position-absolute top-0">Thông tin cá nhân:</div>
+                                </div>
                                 <div class="col-12 col-sm-6">
                                     <input type="text" name="name" required class="form-control bg-light border-0"
                                            placeholder="Họ tên"
@@ -210,29 +213,31 @@
                             </div>
 
                             <div class="row g-3">
-                                <div>Thời gian khám:</div>
+                                <div class="position-relative mb-2">
+                                    <div class="position-absolute top-0">Thời gian khám:</div>
+                                </div>
                                 <div class="col-12 col-sm-6">
-                                <div class="date" id="date" data-target-input="nearest">
-                                    <input type="date"
-                                           name="date_schedule"
-                                           required
-                                           class="form-control bg-light border-0 datetimepicker-input"
-                                           placeholder="Ngày khám" data-target="#date_schedule"
-                                           data-toggle="datetimepicker"
-                                           style="height: 55px;">
+                                    <div class="date" id="date" data-target-input="nearest">
+                                        <input type="date"
+                                               name="date_schedule"
+                                               required
+                                               class="form-control bg-light border-0 datetimepicker-input"
+                                               placeholder="Ngày khám" data-target="#date_schedule"
+                                               data-toggle="datetimepicker"
+                                               style="height: 55px;">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class=" time bg-light border-0">
-                                    <label class="">Thời gian: </label>
-                                    <select name="time" id="time"
-                                            style="width: 100px;border: none;outline: none; border-radius: 8px;">
-                                        {% for t in list_times %}
-                                        <option value="{{t.maTG}}">{{t.gio.strftime('%H:%M %p')}}</option>
-                                        {% endfor %}
-                                    </select>
+                                <div class="col-12 col-sm-6">
+                                    <div class=" time bg-light border-0">
+                                        <label class="">Thời gian: </label>
+                                        <select name="time" id="time"
+                                                style="width: 100px;border: none;outline: none; border-radius: 8px;">
+                                            {% for t in list_times %}
+                                            <option value="{{t.maTG}}">{{t.gio.strftime('%H:%M %p')}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
 
                             <div class="col-12">
@@ -263,7 +268,8 @@
                         {% if m['hinhAnh'] %}
                         <img class="img-fluid h-100" src="{{ m['hinhAnh'] }}" style="object-fit: cover;">
                         {% else %}
-                        <img class="img-fluid h-100" src="{{url_for('static', filename='img/team-1.jpg')}}" style="object-fit: cover;">
+                        <img class="img-fluid h-100" src="{{url_for('static', filename='img/team-1.jpg')}}"
+                             style="object-fit: cover;">
                         {% endif %}
                     </div>
                     <div class="col-12 col-sm-7 h-100 d-flex flex-column">
@@ -280,7 +286,8 @@
                                     class="fab fa-facebook-f"></i></a>
                             <a class="btn btn-lg btn-primary btn-lg-square rounded-circle" href="#"><i
                                     class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-lg btn-primary btn-detail" href="/employee/list_member/{{m['maNV']}}">Xem chi tiết</a>
+                            <a class="btn btn-lg btn-primary btn-detail" href="/employee/list_member/{{m['maNV']}}">Xem
+                                chi tiết</a>
                         </div>
                     </div>
                 </div>
@@ -302,7 +309,7 @@
                 sed ipsum takimata ipsum sit est. Ipsum ea voluptua ipsum sit justo</h5>
         </div>
         <div class="mx-auto" style="width: 100%; max-width: 600px;">
-            <form method="post" action="/search-doctor"  >
+            <form method="post" action="/search-doctor">
                 <div class="input-group">
                     <input type="text" name="name" class="form-control border-primary w-50" placeholder="Tên">
                     <button class="btn btn-dark border-0 w-25">Tìm kiếm</button>

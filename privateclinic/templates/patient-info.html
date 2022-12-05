@@ -30,7 +30,17 @@
                 </div>
             </form>
         </div>
+
         <div class="mt-5">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            {% if category == 'error' %}
+            <div class="alert alert-danger text-center">{{ message }}</div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
             {% if patient %}
             <div class="row">
                 <div class="form-group mt-2 col-md-6 col-sm-12">
