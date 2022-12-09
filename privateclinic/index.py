@@ -1,8 +1,8 @@
 from datetime import date, datetime
 from privateclinic.models import UserRole
 from flask import render_template, request, redirect, url_for, flash, session, jsonify, send_file, make_response
-from privateclinic import login, app, service, admin, controllers
 from privateclinic.admin import *
+from privateclinic import login, app, service, admin, controllers
 from flask_login import login_user, logout_user, login_required, current_user
 import cloudinary.uploader
 import pdfkit
@@ -47,7 +47,7 @@ app.add_url_rule("/api/find_patient_by_id/<int:maBN>", '/api/find_patient_by_id/
                  controllers.find_patient_by_id, methods=['GET'])
 app.add_url_rule("/api/get_all_medicines", 'api_get_all_medicines', controllers.api_get_all_medicines, methods=['GET'])
 app.add_url_rule("/employee/payment", 'payment', controllers.payment, methods=['POST', 'GET'])
-app.add_url_rule("/employee/get_pdf/<maPK>", '/employee/get_pdf/<maPK>', controllers.get_pdf, methods=['POST'])
+app.add_url_rule("/employee/get_pdf", 'get_pdf', controllers.get_pdf, methods=['POST'])
 app.add_url_rule("/api/employee/payment", 'pay', controllers.pay, methods=['POST'])
 app.add_url_rule("/admin/thuoc/new", 'ad_new_medicine', controllers.ad_new_medicine, methods=['POST'])
 app.add_url_rule("/admin/taikhoan/new", 'ad_new_tai_khoan', controllers.ad_new_tai_khoan, methods=['POST'])

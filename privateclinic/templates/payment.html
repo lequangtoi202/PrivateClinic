@@ -99,7 +99,8 @@
             {%endif%}
             <div class="mt-4">
                 <div class="col-12 d-flex">
-                    <form action="{{url_for('get_pdf', maPK=phieu_kham.maPK)}}" , method="post">
+                    <form action="/employee/get_pdf" , method="post">
+                        <input type="text" name="maPK" hidden value="{{phieu_kham.maPK}}"/>
                         <button type="submit" class=" btn btn-danger"
                                 style="width:120px; height: 55px;">In hóa đơn
                         </button>

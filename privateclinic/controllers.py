@@ -330,7 +330,8 @@ def payment():
 
 
 @login_required
-def get_pdf(maPK):
+def get_pdf():
+    maPK = request.form['maPK']
     receipt = service.get_receipt_by_medical_report_id(maPK=maPK)
     phieu_kham = service.get_medical_report_by_id(id=maPK)
     benh_nhan = None
