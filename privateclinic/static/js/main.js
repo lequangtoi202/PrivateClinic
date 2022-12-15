@@ -117,45 +117,6 @@ function find_patient_by_id(param) {
     })
 }
 
-``
-
-
-//function addCode() {
-//    fetch('/api/get_all_medicines', {
-//        method: "GET",
-//        dataType: 'json',
-//        ContentType: 'application/json'
-//    }).then(res => res.json()).then(data => {
-//        add = document.getElementById("add-row");
-//
-//        add.innerHTML += `<tr>
-//                                <td style="width: 300px;">
-//                                    <div class=" time bg-light border-0">
-//                                        <select name="tenThuoc" class="thuoc"
-//                                                style="width: 100%;height: 40px;border: none;outline: none; border-radius: 8px;">
-//                                            <option value="">Không</option>
-//                                        </select>
-//                                    </div>
-//                                </td>
-//                                <td>
-//                                    <input type="number" class="form-control" required name="soLuong" min="0" max="100">
-//                                </td>
-//                                <td>
-//                                    <textarea class="form-control" required name="cachDung"></textarea>
-//                                </td>
-//                            </tr>`
-//        data.forEach(m => {
-//            sl = document.getElementsByTagName('select')
-//            console.log(sl);
-//            var opt = document.createElement('option');
-//            opt.value = m.maThuoc;
-//            opt.innerHTML = m.tenThuoc;
-//            sl.add(opt);
-//        })
-//    }).catch((err) => {
-//      console.log(err)
-//    })
-//}
 listD = []
 function add(){
     soLuong = document.getElementById('soLuong')

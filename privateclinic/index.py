@@ -34,7 +34,7 @@ app.add_url_rule('/employee/create_list_medical_exam', 'list_medical_exam', cont
 app.add_url_rule('/employee/filter', 'filter_all_patients', controllers.filter_all_patients, methods=['POST'])
 app.add_url_rule('/employee/list_medical_exam/export/<string:date>', '/employee/list_medical_exam/export/<string:date>',
                  controllers.export_list_medical_exam)
-app.add_url_rule("/employee/account/<int:id>", '/employee/account/<int:id>', controllers.account_page, methods=['POST', 'GET'])
+app.add_url_rule("/employee/account/<int:id>", 'account_page', controllers.account_page, methods=['POST', 'GET'])
 app.add_url_rule('/employee/update_acc/<int:id>', '/employee/update_acc/<int:id>', controllers.update_account, methods=['POST'])
 app.add_url_rule('/employee/medicine', 'find_medicine', controllers.find_medicine, methods=['GET'])
 app.add_url_rule('/employee/medicine/<int:maThuoc>', '/employee/medicine/<int:maThuoc>', controllers.medicine_detail_page)
@@ -47,7 +47,7 @@ app.add_url_rule("/api/find_patient_by_id/<int:maBN>", '/api/find_patient_by_id/
                  controllers.find_patient_by_id, methods=['GET'])
 app.add_url_rule("/api/get_all_medicines", 'api_get_all_medicines', controllers.api_get_all_medicines, methods=['GET'])
 app.add_url_rule("/employee/payment", 'payment', controllers.payment, methods=['POST', 'GET'])
-app.add_url_rule("/employee/get_pdf", 'get_pdf', controllers.get_pdf, methods=['POST'])
+app.add_url_rule("/employee/get_pdf/<maPK>", 'get_pdf', controllers.get_pdf)
 app.add_url_rule("/api/employee/payment", 'pay', controllers.pay, methods=['POST'])
 app.add_url_rule("/admin/thuoc/new", 'ad_new_medicine', controllers.ad_new_medicine, methods=['POST'])
 app.add_url_rule("/admin/taikhoan/new", 'ad_new_tai_khoan', controllers.ad_new_tai_khoan, methods=['POST'])

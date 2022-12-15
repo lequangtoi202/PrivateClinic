@@ -159,6 +159,7 @@ def account_page(id):
     else:
         user_info = None
     if request.method == 'POST':
+        ma = id
         maNV = request.form['maNV']
         hoTen = request.form['hoTen']
         ngaySinh = request.form['ngaySinh']
@@ -175,11 +176,11 @@ def account_page(id):
             service.update_user_info(maNV=maNV, hoTen=hoTen, ngaySinh=ngaySinh, email=email,
                                      dienThoai=dienThoai, diaChi=diaChi, hinhAnh=hinhAnh)
             flash("Cập nhật thành công!")
-            return redirect("/employee/account/" + maNV)
+            return redirect("/employee/account/" + str(ma))
         except:
             err_user_msg = 'Đã có lỗi xảy ra! Vui lòng quay lại sau!'
 
-    return render_template("account.html", account_info=account_info, user_info=user_info, err_user_msg=err_user_msg)
+    return render_template("account.html", id=id, account_info=account_info, user_info=user_info, err_user_msg=err_user_msg)
 
 
 @login_required
@@ -192,6 +193,7 @@ def update_account(id):
     maNV = request.form['maNV']
     pwd = request.form['password']
     confirm = request.form['confirm']
+    ma = id
     password = ''
     if pwd.__eq__(confirm):
         password = str(hashlib.md5(pwd.strip().encode('utf-8')).hexdigest())
@@ -204,12 +206,12 @@ def update_account(id):
         try:
             service.update_account_info(maNV=maNV, name=name, username=username, password=password, avatar=avatar)
             flash("Cập nhật thành công!")
-            return redirect("/employee/account/" + maNV)
+            return redirect("/employee/account/" + str(ma))
         except:
             err_msg = 'Đã có lỗi xảy ra! Vui lòng quay lại sau!'
     else:
         err_msg = 'Mật khẩu KHÔNG khớp!'
-    return render_template("account.html", err_msg=err_msg, user_info=user_info, account_info=account_info)
+    return render_template("account.html",id=id, err_msg=err_msg, user_info=user_info, account_info=account_info)
 
 
 @login_required
@@ -330,8 +332,7 @@ def payment():
 
 
 @login_required
-def get_pdf():
-    maPK = request.form['maPK']
+def get_pdf(maPK):
     receipt = service.get_receipt_by_medical_report_id(maPK=maPK)
     phieu_kham = service.get_medical_report_by_id(id=maPK)
     benh_nhan = None

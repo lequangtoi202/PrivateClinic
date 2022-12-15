@@ -23,7 +23,7 @@
             <div class="alert alert-danger text-center">{{err_user_msg}}</div>
         {% endif %}
         <div class="mb-5">
-            <form method="post" action="/employee/account/{{user_info.maNV}}" enctype="multipart/form-data">
+            <form method="post" action="/employee/account/{{id}}" enctype="multipart/form-data">
                 <div class="form-group mt-2">
                     <input type="text" class="form-control" name="maNV" hidden value="{{user_info.maNV}}">
                 </div>

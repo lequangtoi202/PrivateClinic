@@ -99,12 +99,7 @@
             {%endif%}
             <div class="mt-4">
                 <div class="col-12 d-flex">
-                    <form action="/employee/get_pdf" , method="post">
-                        <input type="text" name="maPK" hidden value="{{phieu_kham.maPK}}"/>
-                        <button type="submit" class=" btn btn-danger"
-                                style="width:120px; height: 55px;">In hóa đơn
-                        </button>
-                    </form>
+                    <a class=" btn btn-danger" style="width:120px; height: 55px; line-height: 42px" href="/employee/get_pdf/{{phieu_kham.maPK}}">In hóa đơn</a>
                     <button type="button" class="btn-right-position btn btn-danger" onclick="payment()"
                             style="width:120px; height: 55px;">Thanh Toán
                     </button>
